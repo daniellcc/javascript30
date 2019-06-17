@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="search" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+  const data = {
+    endpoint: 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json',
+    suggestions: document.querySelector('.suggestions'),
+    cities: [],
+    formatter: new Intl.NumberFormat('en-US')
+  }
+
+  fetch(data.endpoint)
+    .then((response) => response.json())
+    .then(info => data.cities.push(...info))
+
+  function handleInput(){
+    const input = this.value
+    if(input) return data.suggestions.innerHTML = data.cities
+                        .filter(place => matchesCity(place, input))
+                        .map(place => createResult(place, input))
+                        .join('')
+    else data.suggestions.innerHTML = ''
+  }
+
+  function matchesCity({city, state}, input){
+    const regExp = new RegExp(input, 'i')
+    return regExp.test(city) || regExp.test(state)
+  }
+
+  function createResult({city,state,population}, input){
+    return `<li>
+              <span>${bright(city, input)}, ${bright(state, input)}</span>
+              <span class="population">${data.formatter.format(population)}</span>
+            </li>`
+  }
+
+  function bright(text, input){
+    return text.replace(new RegExp(input, 'i'), match => `<span class="bright">${match}</span>`)
+  }
+
+  document.querySelector('.search').addEventListener('input', handleInput)
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+*{
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	font-family: calibri;
+}
+:root{
+	--spacing: 0;
+	--blur: 0;
+	--color: #FFF000;
+}
+body{
+	background-color: black;
+	display: grid;
+	grid-gap: 30px;
+}
+span{color: var(--color)}
+.title,.option__title{color: white}
+.title{
+	text-align: center;
+	font-size: 3.5em;
+}
+.options{
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	font-size: 2em;
+}
+.color{
+	border: none;
+	background-color: transparent;
+	width: 70px;
+	height: 40px;
+	outline: none;
+}
+.photo{
+	width: 450px;
+	height: auto;
+	margin: auto;
+	padding: var(--spacing);
+	filter: blur(var(--blur));
+	background-color: var(--color)
+}
+
